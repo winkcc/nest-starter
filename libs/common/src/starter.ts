@@ -1,5 +1,6 @@
 import {
   DynamicModule,
+  INestApplication,
   Module,
   NestApplicationOptions,
   Type,
@@ -61,14 +62,26 @@ export class Starter {
     return imports;
   }
 
+  protected async setupGlobalConfig(app: INestApplication): Promise<void> {
+    // swagger 文档
+    if (this.starterConfig.enableSwagger) {
+      SwaggerModule.setup(
+        'doc',
+        app,
+        SwaggerModule.createDocument(app, new DocumentBuilder().build()),
+      );
+    }
+  }
   /**
    * 启动应用
    * @param Module
    */
   async start(Module: Type | DynamicModule): Promise<void> {
     // 创建根模块，挂载子模块和providers
+    // 此处挂载了数据库module
     const rootModule = RootModule.getDynamicRootModule({
       imports: this.getGlobalModuleImports().concat(Module),
+      // providers: this.getGlobalModuleProviders(),
     });
 
     // 创建Nest应用
@@ -77,19 +90,10 @@ export class Starter {
       ...this.nestApplicationOptions,
     });
 
-    //配置swagger
-    const swaggerOptions = new DocumentBuilder()
-      .setTitle('启动类测试') //文档标题
-      .setDescription('nestjs-api-说明') //文档描述
-      .setVersion('1.0') //文档版本
-      .build(); //创建
-
-    //创建swagger
-    const document = SwaggerModule.createDocument(app, swaggerOptions);
-    //启动swagger
-    SwaggerModule.setup('doc', app, document);
+    // 配置应用
+    await this.setupGlobalConfig(app);
 
     // 启动http服务
-    await app.listen(3000);
+    await app.listen(this.starterConfig.port);
   }
 }
