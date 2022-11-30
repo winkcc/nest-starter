@@ -29,6 +29,9 @@ class RootModule {
   }
 }
 
+/**
+ * 启动类
+ */
 export class Starter {
   // 单例
   private static instance?: Starter;
@@ -46,14 +49,13 @@ export class Starter {
   ) {}
 
   /**
-   * 生成全局模块
+   * 全局模块
    * @protected
    */
   protected getGlobalModuleImports(): Array<Type | DynamicModule> {
     const imports: Array<Type | DynamicModule> = [];
-    /**
-     * 全局数据库模块
-     */
+
+    //全局数据库模块
     if (this.starterConfig.globalModule?.typeorm != null) {
       imports.push(
         TypeOrmModule.forRoot(this.starterConfig.globalModule.typeorm),
@@ -62,8 +64,13 @@ export class Starter {
     return imports;
   }
 
+  /**
+   * 全局配置
+   * @param app
+   * @protected
+   */
   protected async setupGlobalConfig(app: INestApplication): Promise<void> {
-    // swagger 文档
+    // 配置swagger 文档
     if (this.starterConfig.enableSwagger) {
       SwaggerModule.setup(
         'doc',
@@ -72,8 +79,9 @@ export class Starter {
       );
     }
   }
+
   /**
-   * 启动应用
+   * 启动方法
    * @param Module
    */
   async start(Module: Type | DynamicModule): Promise<void> {

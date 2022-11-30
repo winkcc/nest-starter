@@ -8,9 +8,9 @@ export class TypeormConfig {
   @IsString()
   type = 'mysql' as const;
   @IsBoolean()
-  logging = false;
+  logging = true;
   @IsBoolean()
-  synchronize = false;
+  synchronize = true;
 }
 export class GlobalModuleConfig {
   @Type(() => TypeormConfig)

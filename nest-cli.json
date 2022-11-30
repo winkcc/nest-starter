@@ -20,6 +20,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/admin/tsconfig.app.json"
       }
+    },
+    "orm": {
+      "type": "library",
+      "root": "libs/orm",
+      "entryFile": "index",
+      "sourceRoot": "libs/orm/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/orm/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {

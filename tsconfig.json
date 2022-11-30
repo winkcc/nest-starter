@@ -23,6 +23,12 @@
       ],
       "@libs/common/*": [
         "libs/common/src/*"
+      ],
+      "@libs/orm": [
+        "libs/orm/src"
+      ],
+      "@libs/orm/*": [
+        "libs/orm/src/*"
       ]
     }
   }
